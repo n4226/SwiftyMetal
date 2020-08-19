@@ -46,6 +46,7 @@ public class Buffer<contents: sizeable>: MetalRepresentable {
     
 	
 	public let mtlItem: MTLBuffer
+	/// the number of objects stored not the number of bytes
 	public private(set) var count: Int
 	
 	public func EraseToAny()->AnyBuffer {

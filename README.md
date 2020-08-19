@@ -2,6 +2,10 @@
 
 A library with helpful objects to improve the experence of making an application with Metal on iOS, macOS, and tvOS in swift. 
 
+# Supported Operating-systems
+
+`iOS 13+` `macOS 10.14+`  `macOS 10.14+ Catalyst` `tvOS 13+`
+
 # Getting Started
 
 You can add a metal view right inside your SwiftUI views
@@ -74,10 +78,11 @@ public class DemoScene: MetalScene {
 
 # Some Features
 
+## Wrapped Metal Objects
+
 for all metal wrapped objects the origonal metal object can be accessed with `.mtlItem`
 
-
-## Buffers
+### Buffer
 
 buffers can be created from an array
 
@@ -92,12 +97,42 @@ buffer.pointer // gives access to the pointer containing thedata
 buffer.updatePointer(with: []) // updates the buffer
 ```
 
-## Textures
+### Texture
 
-## PipelineStates
+### Heap
 
-## Libraries
+### PipelineState
 
-### and more
+### Library
 
+### ArgumentBuffer
 
+## High Level Objects
+
+### Mesh
+
+### PBRMaterial
+
+an object to hold all the properties required by the PBRPipelineState
+
+### PBRPipelineState
+
+### Transform
+
+### Scene
+
+### Camera
+
+calculates its projection matrix
+
+### NativeMetalView
+
+a subclass of MTKView with built in camera and reference to a scene
+
+### MetalView
+
+a NativeMetalView wrapped in a SwiftUI view
+
+# SwiftyMetal-C
+
+SwiftyMetal-C is a seperate target which containes some constants that can be shared between CPU and GPU code to make life easier. If you would like to use these constants in you metal code write now you must coppy all the `.h` files into your project and import them in your `.metal` files. To access them in swift you must make sure that all the `.h` files are not included in your target and import `SwiftyMetal-C` in you swift files.
