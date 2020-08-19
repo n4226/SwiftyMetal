@@ -22,7 +22,7 @@ struct SwiftyMetalDemoProjectApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-		if let scene = scene {
+			if let scene = scene {
 				MetalView(scene: scene, confic: .init())
 			}
 		}
@@ -137,7 +137,7 @@ let buffer = try Buffer(device, from: [10,20,30])
 Then they can be accessed or updated from the CPU
 
 ```swift
-buffer.pointer // gives access to the pointer containing thedata
+buffer.pointer // gives access to the pointer containing the data
 buffer.updatePointer(with: []) // updates the buffer
 ```
 
