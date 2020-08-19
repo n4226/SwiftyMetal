@@ -6,7 +6,7 @@ A library with helpful objects to improve the experence of making an application
 
 You can add a metal view right inside your SwiftUI views
 
-```
+```swift
 import SwiftUI
 import SwiftyMetal
 
@@ -26,7 +26,7 @@ struct SwiftyMetalDemoProjectApp: App {
 
 Then create a subclass of the MetalScene class
 
-```
+```swift
 public class DemoScene: MetalScene {
 
 	var commandQueue: MTLCommandQueue!
