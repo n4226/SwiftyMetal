@@ -1,6 +1,6 @@
 # SwiftGraphicsLib
 
-A library with helpful objects to improve the experence of making an application with Metal on iOS, macOS, and tvOS in swift. 
+A library with helpful objects to improve the experence of making an application with Metal on iOS, macOS, and tvOS in Swift. 
 
 # Supported Operating-systems
 
@@ -8,7 +8,9 @@ A library with helpful objects to improve the experence of making an application
 
 # Getting Started
 
-You can add a metal view right inside your SwiftUI views
+You can use parts of the library on their own or all togerther.
+
+To quickly get a project started, you can add a MetalView right inside your UIKit, AppKit, and SwiftUI views.
 
 ```swift
 import SwiftUI
@@ -19,7 +21,7 @@ struct SwiftyMetalDemoProjectApp: App {
 	var scene = DemoScene()
 
 	var body: some Scene {
-	WindowGroup {
+		WindowGroup {
 		if let scene = scene {
 				MetalView(scene: scene, confic: .init())
 			}
@@ -28,7 +30,7 @@ struct SwiftyMetalDemoProjectApp: App {
 }
 ```
 
-Then create a subclass of the MetalScene class
+Then create a subclass of the MetalScene class.
 
 ```swift
 public class DemoScene: MetalScene {
@@ -76,21 +78,63 @@ public class DemoScene: MetalScene {
 }
 ```
 
+And, finally, create vertex and fragment shaders with the following names. See the SwiftyMetal-C section for more details on using the supplied header files.
+
+```c++
+#include <metal_stdlib>
+
+using namespace metal;
+#include <simd/simd.h>
+#include "shaderTypes.h"
+#include "argumentBuffers.h"
+
+typedef struct
+{
+	float4 position [[position]];
+	float4 color;
+} ColorInOut;
+
+vertex ColorInOut std_pbr_vertex(
+								Vertex in [[stage_in]],
+								constant matrix_float4x4 * model [[ buffer(BufferIndexModelTransform)]],
+								constant Uniforms& uniforms [[buffer(BufferIndexUniforms)]]
+								) {
+
+	ColorInOut out;
+
+	float4 position = float4(in.position,1);
+
+	out.position = uniforms.projectionViewMatrix * *model * position;
+
+	out.color = in.color;
+
+	return out;
+}
+
+fragment float4 std_pbr_fragment(
+								ColorInOut in [[stage_in]],
+								constant PBRMaterial* material [[ buffer(BufferIndexMaterial)]],
+								constant Uniforms& uniforms [[buffer(BufferIndexUniforms)]]
+								) {
+	return in.color;
+}
+```
+
 # Some Features
 
 ## Wrapped Metal Objects
 
-for all metal wrapped objects the origonal metal object can be accessed with `.mtlItem`
+For all metal wrapped objects, the origonal metal object can be accessed with `.mtlItem`.
 
 ### Buffer
 
-buffers can be created from an array
+Buffers can be created from an array.
 
 ```swift
 let buffer = try Buffer(device, from: [10,20,30])
 ```
 
-than accessed or updated from the cpu
+Then they can be accessed or updated from the CPU
 
 ```swift
 buffer.pointer // gives access to the pointer containing thedata
@@ -135,4 +179,4 @@ a NativeMetalView wrapped in a SwiftUI view
 
 # SwiftyMetal-C
 
-SwiftyMetal-C is a seperate target which containes some constants that can be shared between CPU and GPU code to make life easier. If you would like to use these constants in you metal code write now you must coppy all the `.h` files into your project and import them in your `.metal` files. To access them in swift you must make sure that all the `.h` files are not included in your target and import `SwiftyMetal-C` in you swift files.
+SwiftyMetal-C is a separate target which contains some constants that can be shared between CPU and GPU code to make life easier. If you would like to use these constants in your metal code, right now you must copy all the `.h` files into your project and import them in your `.metal` files. To access them in Swift, you must make sure that all the `.h` files are not included in your target. Then, import `SwiftyMetal-C` in your Swift files.
