@@ -48,6 +48,7 @@ open class MetalScene: Configurable {
 	
 	/// overide this method in a subclass to render a scene into the renderingView
 	open func renderScene()throws {
+        try resourceHolder.updateUniforms(for: renderingView, with: cameraTransform, cameraIndex: 0)
 	}
     
 	//MARK: Api
@@ -57,7 +58,6 @@ open class MetalScene: Configurable {
     public func render(in view: NativeMetalView) {
 		renderingView = view
         do {
-			try resourceHolder.updateUniforms(for: view, with: cameraTransform)
 			try renderScene()
         } catch {
 			print("Error (\(error)) while rendering a frame in view \(view). ")

@@ -7,14 +7,14 @@ import MetalKit
 public class NativeMetalView: MTKView, Configurable, MTKViewDelegate {
 	
 	public struct Config: Configuration {
-		public init(camera: Camera = Camera(fov: 60, nearClip: 0.1, farClip: 1000),clearColor: MTLClearColor? = nil, depthStencilPixelFormat: MTLPixelFormat? = nil, device: MTLDevice? = MTLCreateSystemDefaultDevice()) {
-			self.camera = camera
+		public init(cameras: [Camera] = [Camera(fov: 60, nearClip: 0.1, farClip: 1000)],clearColor: MTLClearColor? = nil, depthStencilPixelFormat: MTLPixelFormat? = nil, device: MTLDevice? = MTLCreateSystemDefaultDevice()) {
+			self.cameras = cameras
 			self.clearColor = clearColor
 			self.depthStencilPixelFormat = depthStencilPixelFormat
 			self.device = device
 		}
 		
-		public var camera: Camera = Camera(fov: 60, nearClip: 0.1, farClip: 1000)
+		public var cameras: [Camera] = [Camera(fov: 60, nearClip: 0.1, farClip: 1000)]
 		/// if nil than the view will use the default: MTLClearColor(red: 0, green: 0, blue: 0.5, alpha: 1)
 		public var clearColor: MTLClearColor? = nil
 		/// if nil than the view will use the default: .depth16Unorm
@@ -35,8 +35,8 @@ public class NativeMetalView: MTKView, Configurable, MTKViewDelegate {
 		delegate = self
 		clearColor = settings.clearColor ?? MTLClearColor(red: 0, green: 0, blue: 0.5, alpha: 1)
 		depthStencilPixelFormat = settings.depthStencilPixelFormat ?? MTLPixelFormat.depth32Float
-		camera = settings.camera
-		camera.view = self
+		cameras = settings.cameras
+        cameras.forEach{$0.view = self}
 	}
 	
 	required init(coder: NSCoder) {
@@ -44,7 +44,7 @@ public class NativeMetalView: MTKView, Configurable, MTKViewDelegate {
 		super.init(coder: coder)
 	}
 	
-	public var camera: Camera!
+	public var cameras: [Camera] = []
 	public var scene: MetalScene?
 	/// when this is true uniforms should be updated
 	public var viewSizeDidChange = false

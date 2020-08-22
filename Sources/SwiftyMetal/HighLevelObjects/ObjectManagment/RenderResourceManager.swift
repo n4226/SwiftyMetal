@@ -19,10 +19,10 @@ public class RenderResourceManager {
 	
 	public var all = [RenderRequestItem]()
 	
-	public func updateUniforms(for view: NativeMetalView,with cameraTransform: Transform)throws {
+    public func updateUniforms(for view: NativeMetalView,with cameraTransform: Transform,cameraIndex: Int)throws {
 		
 		let viewMatrix: float4x4 =  cameraTransform.ViewMatrix
-		let projectionMatrix = try view.camera.projection()
+		let projectionMatrix = try view.cameras[cameraIndex].projection()
 		let width = UInt32(view.drawableSize.width)
 		let height = UInt32(view.drawableSize.height)
 		
