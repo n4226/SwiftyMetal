@@ -211,8 +211,6 @@ public class Mesh: Hashable {
 			})
 		}
 		
-		print(uvs.count)
-		
 		subMeshes.removeAll(where: {$0.isEmpty})
 		
 		return Mesh(verts: verts, uvs: uvs, colors: colors, normals: normals,tangents: tangents,bitangents: bitangents, indicies: subMeshes)

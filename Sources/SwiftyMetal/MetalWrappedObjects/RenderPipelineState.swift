@@ -1,7 +1,7 @@
 import Foundation
 import Metal
 
-public class RenderPipelineState: MetalRepresentable, Configurable, Equatable {
+open class RenderPipelineState: MetalRepresentable, Configurable, Equatable {
 	
 	public struct Config: Configuration {
 		public init(library: Library, pipelineConfigurator: Configurator)throws {
