@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger, RenderTargetIndices)
 typedef struct
 {
 	matrix_float4x4 projectionViewMatrix;
+    matrix_float4x4 projectionMatrix;
+    matrix_float4x4 viewMatrix;
 	matrix_float4x4 projection_matrix_inverse;
 	uint framebuffer_width;
 	uint framebuffer_height;

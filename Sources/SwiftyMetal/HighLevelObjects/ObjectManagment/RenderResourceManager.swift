@@ -30,6 +30,8 @@ public class RenderResourceManager {
             
             
             var uniforms: Uniforms = .init()
+            uniforms.projectionMatrix = projectionMatrix
+            uniforms.viewMatrix = viewMatrix
             uniforms.projectionViewMatrix = projectionMatrix * viewMatrix
 			uniforms.projection_matrix_inverse = projectionMatrix.inverse
             uniforms.framebuffer_height = height
