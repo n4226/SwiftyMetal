@@ -4,7 +4,7 @@ import SwiftyMetal_C
 
 
 public class PBRPipelineState: RenderPipelineState {
-	public init(device: MTLDevice,bundle: Bundle = .main)throws {
+    public init(device: MTLDevice,bundle: Bundle = .main,extraInit: (MTLRenderPipelineDescriptor)->() = {_ in})throws {
 		let library = try Library.pbr(device,bundle: bundle)
 		try super.init(with: RenderPipelineState.Config(library: library, pipelineConfigurator: { (des, _) in
 			#if !os(tvOS)
@@ -22,6 +22,8 @@ public class PBRPipelineState: RenderPipelineState {
 			des.fragmentFunction = try library.function(named: "fragment")
 			
 			des.vertexDescriptor = Mesh.vertexDescriptor.mtlItem
+            
+            extraInit(des)
 		}))
 	}
 	
