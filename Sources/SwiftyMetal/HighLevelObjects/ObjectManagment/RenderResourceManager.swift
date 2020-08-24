@@ -39,6 +39,7 @@ public class RenderResourceManager {
             
             cameraUniforms = try Buffer(scene.resourceDevice, from: [uniforms], with: [], label: "Uniforms")
         }else {
+            cameraUniforms!.pointer.pointee.viewMatrix = viewMatrix
 			cameraUniforms!.pointer.pointee.projectionViewMatrix = projectionMatrix * viewMatrix
 			cameraUniforms!.pointer.pointee.projection_matrix_inverse = projectionMatrix.inverse
 			cameraUniforms!.pointer.pointee.framebuffer_height = height
