@@ -36,7 +36,7 @@ open class Buffer<contents: sizeable>: MetalRepresentable {
 	}
 	
 	/// This is nil when the buffer is private
-	open private(set) var pointer: UnsafeMutablePointer<contents>!
+	open var pointer: UnsafeMutablePointer<contents>!
 	
 	/// This will not work when the buffer is private
 	open func updatePointer(with array: [contents]) {
@@ -45,9 +45,9 @@ open class Buffer<contents: sizeable>: MetalRepresentable {
 	}
     
 	
-	open private(set) var mtlItem: MTLBuffer
+	open var mtlItem: MTLBuffer
 	/// the number of objects stored not the number of bytes
-	open private(set) var count: Int
+	open var count: Int
 	
 	open func EraseToAny()->AnyBuffer {
 		return AnyBuffer(self)
