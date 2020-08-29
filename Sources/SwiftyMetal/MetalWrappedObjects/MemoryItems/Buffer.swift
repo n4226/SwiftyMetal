@@ -2,7 +2,7 @@ import Foundation
 import Metal
 import simd
 
-public class Buffer<contents: sizeable>: MetalRepresentable {
+open class Buffer<contents: sizeable>: MetalRepresentable {
 	
 	
 	/// if the buffer is private the data is not transfered to the buffer
@@ -29,31 +29,31 @@ public class Buffer<contents: sizeable>: MetalRepresentable {
 		mtlItem.label = label
 	}
 	
-	internal init(buffer: MTLBuffer,pointer: UnsafeMutablePointer<contents>, count: Int) {
+	public init(buffer: MTLBuffer,pointer: UnsafeMutablePointer<contents>, count: Int) {
 		self.mtlItem = buffer
 		self.pointer = pointer
 		self.count = count
 	}
 	
 	/// This is nil when the buffer is private
-	public private(set) var pointer: UnsafeMutablePointer<contents>!
+	open private(set) var pointer: UnsafeMutablePointer<contents>!
 	
 	/// This will not work when the buffer is private
-	public func updatePointer(with array: [contents]) {
+	open func updatePointer(with array: [contents]) {
 		count = array.count
 		pointer.assign(from: array, count: count)
 	}
     
 	
-	public let mtlItem: MTLBuffer
+	open private(set) var mtlItem: MTLBuffer
 	/// the number of objects stored not the number of bytes
-	public private(set) var count: Int
+	open private(set) var count: Int
 	
-	public func EraseToAny()->AnyBuffer {
+	open func EraseToAny()->AnyBuffer {
 		return AnyBuffer(self)
 	}
 	
-	public func copy()->Buffer<contents> {
+	open func copy()->Buffer<contents> {
 		Buffer<contents>(buffer: mtlItem, pointer: pointer, count: count)
 	}
 	
