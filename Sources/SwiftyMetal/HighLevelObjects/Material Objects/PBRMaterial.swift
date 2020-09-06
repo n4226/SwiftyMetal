@@ -66,9 +66,17 @@ open class PBRMaterial {
 }
 
 extension PBRMaterial: ArgumentEncodable {
-	public func encode(into encoder: MTLArgumentEncoder)throws {
+    public func encode(into encoder: MTLArgumentEncoder) throws {
+        try encode(into: encoder, pipeline: pipelineState(device: encoder.device))
+    }
+    
+    public func encode(into encoder: MTLArgumentEncoder, pipeline: RenderPipelineState?) throws {
+        try encode(into: encoder, pipeline: pipeline ?? pipelineState(device: encoder.device))
+    }
+    
+    public func encode(into encoder: MTLArgumentEncoder,pipeline: RenderPipelineState)throws {
 		if #available(OSX 10.14,iOS 12,tvOS 12, *) {
-			encoder.setRenderPipelineState(try pipelineState(device: encoder.device).mtlItem, index: MatArgId.pipeline.rawValue)
+			encoder.setRenderPipelineState(pipeline.mtlItem, index: MatArgId.pipeline.rawValue)
 		}
         encoder.setTexture(diffuse.mtlItem, index: MatArgId.albedo.rawValue)
         encoder.setTexture(metallic.mtlItem, index: MatArgId.metallic.rawValue)
@@ -95,9 +103,9 @@ extension PBRMaterial: Hashable {
 
 public class PBRMaterialBuffer {
     
-    public init(_ device: MTLDevice,material: PBRMaterial)throws {
+    public init(_ device: MTLDevice,material: PBRMaterial,pipeline: RenderPipelineState? = nil)throws {
         buffer = try ArgumentBuffer(function: material.pipelineState(device: device).library.function(named: "fragment"), index: BufferIndex.material, configure: { (encoder) in
-            try material.encode(into: encoder)
+            try material.encode(into: encoder,pipeline: pipeline)
         }, options: [], label: "material")
     }
     
