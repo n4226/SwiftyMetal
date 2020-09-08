@@ -109,6 +109,12 @@ public class PBRMaterialBuffer {
         }, options: [], label: "material")
     }
     
+    init(_ heap: MTLHeap,material: PBRMaterial,pipeline: RenderPipelineState? = nil)throws {
+        buffer = try ArgumentBuffer(function: material.pipelineState(device: heap.device).library.function(named: "fragment"),index: BufferIndex.material, heap, configure: { (encoder) in
+            try material.encode(into: encoder,pipeline: pipeline)
+        }, options: [], label: "material")
+    }
+    
     public var buffer: ArgumentBuffer
     
 }
