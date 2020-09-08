@@ -17,7 +17,7 @@ open class Buffer<contents: sizeable>: MetalRepresentable {
 	
 	/// if the buffer is private the data is not transfered to the buffer
 	public init(_ heap: MTLHeap, from array: [contents], with options: MTLResourceOptions = [], label: String? = nil) throws {
-        let options = options.intersection(.storageModePrivate : [])
+        let options = options.intersection(.storageModePrivate)
 		count = array.count
 		mtlItem = try heap.makeBuffer(length: contents.size(count), options: options).unWrapped()
 		if !options.contains(.storageModePrivate) {
