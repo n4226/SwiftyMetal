@@ -19,6 +19,7 @@ public class VertexDescriptor: MetalRepresentable {
 		mtlItem.attributes[attribute.rawValue].offset = 0
 		mtlItem.attributes[attribute.rawValue].bufferIndex = attribute.rawValue
 	}
+    
 	/// think of as buffer
 	public func createLayout<VertexAttribute: RawRepresentable>(stride: Int,attribute: VertexAttribute)  where VertexAttribute.RawValue == Int {
 		mtlItem.layouts[attribute.rawValue].stride = stride
