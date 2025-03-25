@@ -16,11 +16,15 @@ open class Camera {
 	public let nearClip: Float
 	public let farClip: Float
 	
-	open func projection()throws->matrix_float4x4 {
+	open func projection() throws->matrix_float4x4 {
 		let view = try self.view.unWrapped()
 		return matrix_perspective_right_hand(fovyRadians: fov.Radians, aspectRatio: view.drawableSize.width.float / view.drawableSize.height.float, nearZ: nearClip, farZ: farClip)
 	}
-	
+    
+    open func projection(width: Float, height: Float)->matrix_float4x4 {
+        return matrix_perspective_right_hand(fovyRadians: fov.Radians, aspectRatio: width / height, nearZ: nearClip, farZ: farClip)
+    }
+
 	private static func sPlaneNormalize(_ inPlane: simd_float4)->simd_float4{
 		inPlane / simd_length(simd_float3(inPlane.x,inPlane.y,inPlane.z));
 	}
