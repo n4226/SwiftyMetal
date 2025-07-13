@@ -1,7 +1,8 @@
 import Foundation
 
 public extension Mesh {
-	static var quad: Mesh = { 
+    nonisolated
+	static var quad: Mesh = {
 		let m = Mesh(verts: [
 			.init(1, 1, 0),
 			.init(-1, 1, 0),
